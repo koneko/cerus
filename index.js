@@ -19,6 +19,7 @@ function check() {
     let members = document.getElementById('members')
     let roles = document.getElementById('roles')
     let settings = document.getElementById('settings')
+    let hidebtn = document.getElementById('hidebtn')
 
     if(page == 'overview') {
         overview.classList.add('active')
@@ -35,6 +36,10 @@ function check() {
         settings.classList.add('active')
         clearPage()
         settingsPage()
+    } else if(page == "share") {
+        hidebtn.classList.add('active')
+        clearPage()
+        sharePage()
     }
 }
 
@@ -68,34 +73,41 @@ function overviewPage() {
     <div style="margin-left: 50px;"><b>Status</b></div>
     </div>
     `
-    members.forEach(member => {
-        let role = roles.find(v => v.name == member.role)
-        let div = document.createElement('div')
-        let memberstatus = null
-        if(member.status == "failed") {
-            memberstatus = statusList.failed
-        } else if(member.status == "passed") {
-            memberstatus = statusList.passed
-        } else if(member.status == "inactive") {
-            memberstatus = statusList.inactive
-        } else {
-            memberstatus = statusList.immune
-        }
-        div.style.display = "flex"
-        div.style.marginBottom = "19.5px"
-        div.style.marginTop = "19.5px"
-        div.removeAttribute("tabIndex");
-        div.innerHTML = `
-        <div style="width: 100px;"><span style="color:${role.color};">${role.name}</span></div>
-        <div style="width: 150px;"><span>${member.name}</span></div>
-        <div style="width: 60x;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addPoint('${member.name}')"></i></span><b>${member.points}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removePoint('${member.name}')"></i></div>
-        <div style="margin-left:50px;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addSupPoint('${member.name}')"></i></span><b>${member.supervisions}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removeSupPoint('${member.name}')"></i></div>
-        <div style="margin-left:50px;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addStrike('${member.name}')"></i></span><b>${member.strikes}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removeStrike('${member.name}')"></i></div>
-        <div style="margin-left:60px;"><span>${memberstatus}</span></div>
-        
-        `
-        content.appendChild(div)
-    });
+    for (let roleindex = 0; roleindex < roles.length; roleindex++) {
+        let rolename = roles[roleindex].name
+        var filter = members.filter((member) => { 
+            return member.role == rolename
+        });
+        filter.forEach(member => {
+            let role = roles.find(v => v.name == member.role)
+            let div = document.createElement('div')
+            let memberstatus = null
+            if(member.status == "failed") {
+                memberstatus = statusList.failed
+            } else if(member.status == "passed") {
+                memberstatus = statusList.passed
+            } else if(member.status == "inactive") {
+                memberstatus = statusList.inactive
+            } else {
+                memberstatus = statusList.immune
+            }
+            div.style.display = "flex"
+            div.style.marginBottom = "19.5px"
+            div.style.marginTop = "19.5px"
+            div.removeAttribute("tabIndex");
+            div.innerHTML = `
+            <div style="width: 100px;"><span style="color:${role.color};">${role.name}</span></div>
+            <div style="width: 150px;"><span>${member.name}</span></div>
+            <div style="width: 60x;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addPoint('${member.name}')"></i></span><b>${member.points}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removePoint('${member.name}')"></i></div>
+            <div style="margin-left:50px;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addSupPoint('${member.name}')"></i></span><b>${member.supervisions}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removeSupPoint('${member.name}')"></i></div>
+            <div style="margin-left:50px;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addStrike('${member.name}')"></i></span><b>${member.strikes}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removeStrike('${member.name}')"></i></div>
+            <div style="margin-left:60px;"><span>${memberstatus}</span></div>
+            
+            `
+            content.appendChild(div)
+        });
+    }
+
 }
 
 function rolesPage() {
@@ -180,6 +192,61 @@ function settingsPage() {
     `
 }
 
+
+
+function sharePage() {
+    if(!localStorage.members || !localStorage.roles) {
+        content.innerHTML = '<p class="text-muted">No members or roles found, please create them.</p>'
+        return
+    }
+    let roles = JSON.parse(localStorage.roles)
+    let members = JSON.parse(localStorage.members)
+    content.innerHTML = `
+    <div style="display:flex; margin-bottom: 10px;">
+    <div style="width: 100px;"><b>Rank</b></div>
+    <div style="width: 150px;"><b>Username</b></div>
+    <div style="width: 60px;"><b>Points</b></div>
+    <div style="margin-left:29px;"><b>Supervisions</b></div>
+    <div style="margin-left: 35px;"><b>Strikes</b></div>
+    <div style="margin-left: 50px;"><b>Status</b></div>
+    </div>
+    `
+    for (let roleindex = 0; roleindex < roles.length; roleindex++) {
+        let rolename = roles[roleindex].name
+        var filter = members.filter((member) => { 
+            return member.role == rolename
+        });
+        filter.forEach(member => {
+            let role = roles.find(v => v.name == member.role)
+            let div = document.createElement('div')
+            let memberstatus = null
+            if(member.status == "failed") {
+                memberstatus = statusList.failed
+            } else if(member.status == "passed") {
+                memberstatus = statusList.passed
+            } else if(member.status == "inactive") {
+                memberstatus = statusList.inactive
+            } else {
+                memberstatus = statusList.immune
+            }
+            div.style.display = "flex"
+            div.style.marginBottom = "19.5px"
+            div.style.marginTop = "19.5px"
+            div.removeAttribute("tabIndex");
+            div.innerHTML = `
+            <div style="width: 100px;"><span style="color:${role.color};">${role.name}</span></div>
+            <div style="width: 150px;"><span>${member.name}</span></div>
+            <div style="width: 70x; margin-left: 10px;"><span style="margin-right: 10px;"></span><b>${member.points}</b></div>
+            <div style="margin-left:90px;"><span style="margin-right: 10px;"></span><b>${member.supervisions}</b></div>
+            <div style="margin-left:85px;"><span style="margin-right: 10px;"></span><b>${member.strikes}</b></div>
+            <div style="margin-left:90px;"><span>${memberstatus}</span></div>
+            
+            `
+            content.appendChild(div)
+        });
+    }
+
+}
 
 
 function createRole() {
