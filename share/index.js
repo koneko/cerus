@@ -2,7 +2,7 @@ const params = new URLSearchParams(window.location.search)
 
 let code = params.get('code')
 let value = atob(code)
-console.log(value)
+console.log(value.members)
 
 function sharePage() {
     let roles = JSON.parse(value.roles)
