@@ -12,6 +12,7 @@ var statusList = {
 
 if(!localStorage.page) {
     localStorage.page = "overview"
+    location.reload()
 }
 
 function check() {
