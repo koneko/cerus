@@ -284,9 +284,6 @@ function createMember() {
         let json = []
         localStorage.members = JSON.stringify(json)
     }
-    if(!localStorage.currentRole) {
-        return alert('select a role to give this user')
-    }
     let members = JSON.parse(localStorage.members)
     let roles = JSON.parse(localStorage.roles)
     let name = document.getElementById('username').value
