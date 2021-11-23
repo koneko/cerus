@@ -423,7 +423,7 @@ function shareCode() {
     let encrypted2 = btoa(JSON.stringify(members))
     let a = document.createElement('a')
     a.textContent = "CLICK ME!"
-    a.href = `/share?members=${encrypted1}&roles=${encrypted2}` 
+    a.href = `https://hub.koneko.link/cerus/share?members=${encrypted1}&roles=${encrypted2}` 
     content.appendChild(a)
 }
 
