@@ -1,12 +1,9 @@
 const params = new URLSearchParams(window.location.search)
 
-let code = params.get('code')
-let value = atob(code)
-console.log(value.members)
+var members = atob(params.get('members'))
+var roles = atob(params.get('roles'))
 
 function sharePage() {
-    let roles = JSON.parse(value.roles)
-    let members = JSON.parse(value.members)
     content.innerHTML = `
     <div style="display:flex; margin-bottom: 10px;">
     <div style="width: 100px;"><b>Rank</b></div>

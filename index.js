@@ -417,14 +417,14 @@ function changeStatus() {
 }
 
 function shareCode() {
-    let data = {
-        roles: JSON.parse(localStorage.roles),
-        members: JSON.parse(localStorage.members)
-    }
-    let encrypted = btoa(JSON.stringify(data))
-    let p = document.createElement('p')
-    p.innerHTML = `Sharing URL: /share?code=${encrypted}` 
-    content.appendChild(p)
+    let members = JSON.parse(localStorage.members)
+    let roles = JSON.parse(localStorage.roles)
+    let encrypted1 = btoa(JSON.stringify(roles))
+    let encrypted2 = btoa(JSON.stringify(members))
+    let a = document.createElement('a')
+    a.textContent = "CLICK ME!"
+    a.href = `/share?members=${encrypted1}&roles=${encrypted2}` 
+    content.appendChild(a)
 }
 
 function myFunction() {
