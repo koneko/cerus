@@ -2,6 +2,7 @@ const params = new URLSearchParams(window.location.search)
 
 var membersraw = atob(params.get('members'))
 var rolesraw = atob(params.get('roles'))
+var content = document.getElementById('content')
 
 function sharePage() {
     let roles = JSON.parse(rolesraw)
