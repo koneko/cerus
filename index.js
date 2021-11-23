@@ -190,6 +190,8 @@ function settingsPage() {
     <button class="btn btn-outline-success" onclick="changeStatus()">set status</button><br><br>
     <button class="btn btn-outline-danger" onclick="deleted('members')">Delete Members</button>
     <button class="btn btn-outline-danger" onclick="deleted('roles')">Delete Roles</button>
+    <br><br><br>
+    <button class="btn btn-outline-info" onclick="shareCode()">Generate shareable page</button>
     `
 }
 
@@ -422,7 +424,7 @@ function shareCode() {
     let encrypted1 = btoa(JSON.stringify(roles))
     let encrypted2 = btoa(JSON.stringify(members))
     let a = document.createElement('a')
-    a.textContent = "CLICK ME!"
+    a.textContent = "Click here for the sharing link."
     a.href = `https://hub.koneko.link/cerus/share?members=${encrypted1}&roles=${encrypted2}` 
     content.appendChild(a)
 }
