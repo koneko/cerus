@@ -24,41 +24,35 @@ function sharePage() {
     </div>
     `
     for (let roleindex = 0; roleindex < roles.length; roleindex++) {
-        let rolename = roles[roleindex].name
-        console.log(rolename)
-        var filter = members.filter((member) => { 
-            return member.role == rolename
-        });
-        console.log(filter)
-        filter.forEach(member => {
-            console.log(member)
-            let role = roles.find(v => v.name == member.role)
-            let div = document.createElement('div')
-            let memberstatus = null
-            if(member.status == "failed") {
-                memberstatus = statusList.failed
-            } else if(member.status == "passed") {
-                memberstatus = statusList.passed
-            } else if(member.status == "inactive") {
-                memberstatus = statusList.inactive
-            } else {
-                memberstatus = statusList.immune
-            }
-            div.style.display = "flex"
-            div.style.marginBottom = "19.5px"
-            div.style.marginTop = "19.5px"
-            div.removeAttribute("tabIndex");
-            div.innerHTML = `
-            <div style="width: 100px;"><span style="color:${role.color};">${role.name}</span></div>
-            <div style="width: 150px;"><span>${member.name}</span></div>
-            <div style="width: 70x; margin-left: 10px;"><span style="margin-right: 10px;"></span><b>${member.points}</b></div>
-            <div style="margin-left:90px;"><span style="margin-right: 10px;"></span><b>${member.supervisions}</b></div>
-            <div style="margin-left:85px;"><span style="margin-right: 10px;"></span><b>${member.strikes}</b></div>
-            <div style="margin-left:90px;"><span>${memberstatus}</span></div>
-            
-            `
-            content.appendChild(div)
-        });
+            members.forEach(member => {
+                let role = roles.find(v => v.name == member.role)
+                let div = document.createElement('div')
+                let memberstatus = null
+                if(member.status == "failed") {
+                    memberstatus = statusList.failed
+                } else if(member.status == "passed") {
+                    memberstatus = statusList.passed
+                } else if(member.status == "inactive") {
+                    memberstatus = statusList.inactive
+                } else {
+                    memberstatus = statusList.immune
+                }
+                div.style.display = "flex"
+                div.style.marginBottom = "19.5px"
+                div.style.marginTop = "19.5px"
+                div.removeAttribute("tabIndex");
+                div.innerHTML = `
+                <div style="width: 100px;"><span style="color:${role.color};">${role.name}</span></div>
+                <div style="width: 150px;"><span>${member.name}</span></div>
+                <div style="width: 70x; margin-left: 10px;"><span style="margin-right: 10px;"></span><b>${member.points}</b></div>
+                <div style="margin-left:90px;"><span style="margin-right: 10px;"></span><b>${member.supervisions}</b></div>
+                <div style="margin-left:85px;"><span style="margin-right: 10px;"></span><b>${member.strikes}</b></div>
+                <div style="margin-left:90px;"><span>${memberstatus}</span></div>
+                
+                `
+                content.appendChild(div)
+            });
+
     }
 
 }

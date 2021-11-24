@@ -191,7 +191,7 @@ function settingsPage() {
     <button class="btn btn-outline-danger" onclick="deleted('members')">Delete Members</button>
     <button class="btn btn-outline-danger" onclick="deleted('roles')">Delete Roles</button>
     <br><br><br>
-    <button class="btn btn-outline-info" onclick="shareCode()">Generate shareable page</button>
+    <button class="btn btn-outline-info" onclick="shareCode()">Generate shareable page</button><br><br>
     `
 }
 
@@ -421,8 +421,52 @@ function changeStatus() {
 function shareCode() {
     let members = JSON.parse(localStorage.members)
     let roles = JSON.parse(localStorage.roles)
+    let sorted = []
+    for (let roleindex = 0; roleindex < roles.length; roleindex++) {
+        let rolename = roles[roleindex].name
+        var filter = members.filter((member) => { 
+            return member.role == rolename
+        });
+        filter.forEach(member => {
+            let role = roles.find(v => v.name == member.role)
+            let memberstatus = null
+            if(member.status == "failed") {
+                memberstatus = statusList.failed
+            } else if(member.status == "passed") {
+                memberstatus = statusList.passed
+            } else if(member.status == "inactive") {
+                memberstatus = statusList.inactive
+            } else {
+                memberstatus = statusList.immune
+            }
+            let mem = {
+                "name": member.name,
+                "role": member.role,
+                "points": member.points,
+                "supervisions": member.supervisions,
+                "strikes": member.strikes,
+                "status": memberstatus
+            }
+            sorted.push(mem)
+            // let entry = {
+            //     "name" : name,
+            //     "role": rank,
+            //     "points": 0,
+            //     "supervisions": 0,
+            //     "strikes": 0,
+            //     "status": "failed"
+            // }
+            // div.innerHTML = `
+            // <div style="width: 100px;"><span style="color:${role.color};">${role.name}</span></div>
+            // <div style="width: 150px;"><span>${member.name}</span></div>
+            // <div style="width: 60x;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addPoint('${member.name}')"></i></span><b>${member.points}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removePoint('${member.name}')"></i></div>
+            // <div style="margin-left:50px;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addSupPoint('${member.name}')"></i></span><b>${member.supervisions}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removeSupPoint('${member.name}')"></i></div>
+            // <div style="margin-left:50px;"><span style="margin-right: 10px;"><i class="fa-solid fa-plus" style="color:lightgreen; cursor: pointer;" onclick="addStrike('${member.name}')"></i></span><b>${member.strikes}</b><i class="fa-solid fa-minus" style="color:red; margin-left:10px; cursor: pointer;" onclick="removeStrike('${member.name}')"></i></div>
+            // <div style="margin-left:60px;"><span>${memberstatus}</span></div>
+        });
+    }
     let encrypted1 = btoa(JSON.stringify(roles))
-    let encrypted2 = btoa(JSON.stringify(members))
+    let encrypted2 = btoa(JSON.stringify(sorted))
     let a = document.createElement('a')
     a.textContent = "Click here for the sharing link."
     a.href = `https://hub.koneko.link/cerus/share?members=${encrypted1}&roles=${encrypted2}` 
