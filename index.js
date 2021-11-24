@@ -188,18 +188,36 @@ function settingsPage() {
     <input placeholder="Username..." id="usernamestatus"><br><br>
     <input placeholder="Status..." id="status"><br><br>
     <button class="btn btn-outline-success" onclick="changeStatus()">set status</button><br><br>
-
-    <input placeholder="raw roles" id="rawrolesid">
-    <input placeholder="raw members" id="rawmembersid"><br><br>
-    <button class="btn btn-outline-warning" onclick="importSettings()">Import external settings</button>
-    <br><br>
+    <div class="text-muted">
+    immune = 🛡️<br>
+    inactive = 💤<br>
+    passed = ✔️<br>
+    failed = ❌
+    </div><br>
+    <textarea class="form-control-inline" rows="4" placeholder="raw members" id="rawmembersid"></textarea>
+    <textarea class="form-control-inline" rows="4" placeholder="raw roles" id="rawrolesid"></textarea><br><br>
+    <button class="btn btn-outline-warning" onclick="importSettings()">Import external settings</button><br><br>
+    <button class="btn btn-outline-info" onclick="shareCode()">Generate shareable page</button>
+    <button class="btn btn-outline-success" onclick="outputRolesAndMembers()">Export internal settings</button>
     <button class="btn btn-outline-danger" onclick="deleted('members')">Delete Members</button>
-    <button class="btn btn-outline-danger" onclick="deleted('roles')">Delete Roles</button><br><br>
-    <button class="btn btn-outline-info" onclick="shareCode()">Generate shareable page</button><br><br>
-    
+    <button class="btn btn-outline-danger" onclick="deleted('roles')">Delete Roles</button>
+    <button class="btn btn-outline-danger" onclick="resetAll()">Reset member points</button><br><br>
+    <div id="outputdata">
+    </div>
     `
 }
 
+function outputRolesAndMembers() {
+    let roles = JSON.parse(localStorage.roles)
+    let members = JSON.parse(localStorage.members)
+    var output = document.getElementById('outputdata')
+    var sh = document.createElement('div')
+    sh.innerHTML = `<span><b>Members</b></span><input class="form-control" type="text" value=${localStorage.members.toString()}><br>`
+    var shit = document.createElement('div')
+    shit.innerHTML = `<span><b>Roles</b></span><input class="form-control" type="text" value=${localStorage.roles.toString()}>`
+    output.appendChild(sh)
+    output.appendChild(shit)
+}
 
 
 function sharePage() {
@@ -430,6 +448,16 @@ function changeStatus() {
     location.reload()
 }
 
+function resetAll() {
+    let members = JSON.parse(localStorage.members)
+    members.forEach(member => {
+        member.points = 0
+        member.supervisions = 0
+        member.status = "failed"
+    });
+    localStorage.members = JSON.stringify(members)
+}
+
 function shareCode() {
     let members = JSON.parse(localStorage.members)
     let roles = JSON.parse(localStorage.roles)
@@ -481,9 +509,8 @@ function shareCode() {
     let encrypted1 = btoa(JSON.stringify(sorted))
     let encrypted2 = btoa(JSON.stringify(roles))
     let a = document.createElement('a')
-    a.textContent = "Click here for the sharing link."
     a.href = `https://hub.koneko.link/cerus/share?members=${encrypted1}&roles=${encrypted2}` 
-    content.appendChild(a)
+    a.click()
 }
 
 function myFunction() {
