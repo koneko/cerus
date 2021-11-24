@@ -478,8 +478,8 @@ function shareCode() {
         });
     }
     console.log(sorted)
-    let encrypted1 = btoa(JSON.stringify(roles))
-    let encrypted2 = btoa(JSON.stringify(sorted))
+    let encrypted1 = btoa(JSON.stringify(sorted))
+    let encrypted2 = btoa(JSON.stringify(roles))
     let a = document.createElement('a')
     a.textContent = "Click here for the sharing link."
     a.href = `https://hub.koneko.link/cerus/share?members=${encrypted1}&roles=${encrypted2}` 
