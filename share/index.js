@@ -2,6 +2,8 @@ const params = new URLSearchParams(window.location.search)
 
 var membersraw = atob(params.get('members'))
 var rolesraw = atob(params.get('roles'))
+let roles = JSON.parse(rolesraw)
+let members = JSON.parse(membersraw)
 var content = document.getElementById('content')
 var statusList = {
     "immune": "🛡️",
@@ -11,8 +13,6 @@ var statusList = {
 }
 
 function sharePage() {
-    let roles = JSON.parse(rolesraw)
-    let members = JSON.parse(membersraw)
     content.innerHTML = `
     <div style="display:flex; margin-bottom: 10px;">
     <div style="width: 100px;"><b>Rank</b></div>
