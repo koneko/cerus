@@ -25,10 +25,13 @@ function sharePage() {
     `
     for (let roleindex = 0; roleindex < roles.length; roleindex++) {
         let rolename = roles[roleindex].name
+        console.log(rolename)
         var filter = members.filter((member) => { 
             return member.role == rolename
         });
+        console.log(filter)
         filter.forEach(member => {
+            console.log(member)
             let role = roles.find(v => v.name == member.role)
             let div = document.createElement('div')
             let memberstatus = null
