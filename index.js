@@ -188,10 +188,15 @@ function settingsPage() {
     <input placeholder="Username..." id="usernamestatus"><br><br>
     <input placeholder="Status..." id="status"><br><br>
     <button class="btn btn-outline-success" onclick="changeStatus()">set status</button><br><br>
+
+    <input placeholder="raw roles" id="rawrolesid">
+    <input placeholder="raw members" id="rawmembersid"><br><br>
+    <button class="btn btn-outline-warning" onclick="importSettings()">Import external settings</button>
+    <br><br>
     <button class="btn btn-outline-danger" onclick="deleted('members')">Delete Members</button>
-    <button class="btn btn-outline-danger" onclick="deleted('roles')">Delete Roles</button>
-    <br><br><br>
+    <button class="btn btn-outline-danger" onclick="deleted('roles')">Delete Roles</button><br><br>
     <button class="btn btn-outline-info" onclick="shareCode()">Generate shareable page</button><br><br>
+    
     `
 }
 
@@ -249,6 +254,13 @@ function sharePage() {
         });
     }
 
+}
+
+function importSettings() {
+    var rawroles = document.getElementById('rawrolesid').value
+    var rawmembers = document.getElementById('rawmembersid').value
+    localStorage.members = rawmembers
+    localStorage.roles = rawroles
 }
 
 
@@ -431,13 +443,13 @@ function shareCode() {
             let role = roles.find(v => v.name == member.role)
             let memberstatus = null
             if(member.status == "failed") {
-                memberstatus = statusList.failed
+                memberstatus = "failed"
             } else if(member.status == "passed") {
-                memberstatus = statusList.passed
+                memberstatus = "passed"
             } else if(member.status == "inactive") {
-                memberstatus = statusList.inactive
+                memberstatus = "inactive"
             } else {
-                memberstatus = statusList.immune
+                memberstatus = "immune"
             }
             let mem = {
                 "name": member.name,
@@ -465,6 +477,7 @@ function shareCode() {
             // <div style="margin-left:60px;"><span>${memberstatus}</span></div>
         });
     }
+    console.log(sorted)
     let encrypted1 = btoa(JSON.stringify(roles))
     let encrypted2 = btoa(JSON.stringify(sorted))
     let a = document.createElement('a')
