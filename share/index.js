@@ -23,7 +23,6 @@ function sharePage() {
     <div style="margin-left: 50px;"><b>Status</b></div>
     </div>
     `
-    for (let roleindex = 0; roleindex < roles.length; roleindex++) {
             members.forEach(member => {
                 let role = roles.find(v => v.name == member.role)
                 let div = document.createElement('div')
@@ -52,8 +51,6 @@ function sharePage() {
                 `
                 content.appendChild(div)
             });
-
-    }
 
 }
 
