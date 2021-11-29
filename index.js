@@ -194,6 +194,7 @@ function settingsPage() {
     passed = ✔️<br>
     failed = ❌
     </div><br>
+    <p>${generatePass()}</p>
     <textarea class="form-control-inline" rows="4" placeholder="raw members" id="rawmembersid"></textarea>
     <textarea class="form-control-inline" rows="4" placeholder="raw roles" id="rawrolesid"></textarea><br><br>
     <button class="btn btn-outline-warning" onclick="importSettings()">Import external settings</button><br><br>
@@ -219,6 +220,17 @@ function outputRolesAndMembers() {
     output.appendChild(shit)
 }
 
+function generatePass() {
+    let members = JSON.parse(localStorage.members)
+    let passed = 0
+    members.forEach(member => {
+        if(member.status == "passed") {
+            passed = passed + 1
+        }
+    });
+    let result = (members.length / passed) * 100
+    return `Passing percentage is <b>${result}</b>.`
+}
 
 function sharePage() {
     if(!localStorage.members || !localStorage.roles) {
