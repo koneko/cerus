@@ -223,12 +223,18 @@ function outputRolesAndMembers() {
 function generatePass() {
     let members = JSON.parse(localStorage.members)
     let passed = 0
+    let total = 0
     members.forEach(member => {
         if(member.status == "passed") {
             passed = passed + 1
         }
     });
-    let result = (members.length / passed) * 100
+    members.forEach(member => {
+        if(member.status == "passed" || member.status == "failed") {
+            total = total + 1
+        }
+    });
+    let result = (passed / total) * 100
     if(result == "Infinity") {
         result = "0"
     }
