@@ -229,7 +229,10 @@ function generatePass() {
         }
     });
     let result = (members.length / passed) * 100
-    return `Passing percentage is <b>${result}</b>.`
+    if(result == "Infinity") {
+        result = "0"
+    }
+    return `Passing percentage is <b>${result}%</b>.`
 }
 
 function sharePage() {
